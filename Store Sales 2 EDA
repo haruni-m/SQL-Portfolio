@@ -1,0 +1,35 @@
+ select * from SALES_EXPORT_2019_2020;
+ select min(date), max(date) from SALES_EXPORT_2019_2020;
+
+-- HOW MANY ORDERS WERE MADE DURING TIME RECORDED --
+select DISTINCT count(order_id) from SALES_EXPORT_2019_2020;
+
+-- HOW MANY ORDERS WERE MADE FROM ENGLAND -- 
+select DISTINCT count(order_id) from SALES_EXPORT_2019_2020 where country = 'UK';
+
+-- IDENTIFYING AND ORDERING (DESCENDING ORDER) ORDER LOCATIONS --
+select country, count(country) as orders_placed from SALES_EXPORT_2019_2020 group by country order by orders_placed desc;
+
+-- IDENTIFYING AND ORDERING (DESCENDING ORDER) ORDER DEVICE TYPE --
+select device_type, count(device_type) as orders_placed from SALES_EXPORT_2019_2020 group by device_type order by orders_placed desc;
+
+-- HOW MANY ORDERS WERE FOR GAMES? -- 
+select category, count(category) as orders_placed from SALES_EXPORT_2019_2020 where category = 'Games'  group by category order by orders_placed ;
+
+-- HOW MANY PRODUCTS OF EACH CATEGORY WERE SOLD, DESCENDING ORDER? -- 
+select category, count(category) as orders_placed from SALES_EXPORT_2019_2020 group by category order by orders_placed desc;
+
+-- RANKING SALES REPS BY ORDERS PLACED --
+select sales_rep, count(order_id) as orders_placed from SALES_EXPORT_2019_2020 group by sales_rep order by orders_placed desc; 
+
+-- HOW PRODUCTS IN EACH CATEGORY WAS SOLD BY SALES REP WAT BOWKLEY --
+select distinct category, count(category) as order_placed from SALES_EXPORT_2019_2020 where sales_rep = 'Wat Bowkley' group by category;
+
+-- WHICH SALES REP MADE THE MOST SALES IN JANUARY 2020 --
+select sales_rep, count(order_id) as orders_placed from SALES_EXPORT_2019_2020 where date between '01/01/2020' and '31/01/2020' group by sales_rep order by orders_placed desc; 
+
+-- WHICH SALES REP MADE AT LEAST 5 SLAES IN JANUARY 2020 -- 
+select sales_rep, count(order_id) as orders_placed from SALES_EXPORT_2019_2020 where date between '01/01/2020' and '31/01/2020'
+group by sales_rep
+having orders_placed >= 10
+order by orders_placed desc;
