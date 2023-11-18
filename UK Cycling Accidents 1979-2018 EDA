@@ -1,0 +1,38 @@
+select * from Accidents;
+
+SELECT min(Date) as earliest_date_log,
+max(Date)as latest_date_log
+from Accidents;
+-- the earliest and latest bike accident entries --
+
+select min(Date) from Accidents;
+
+-- THE AGE GROUPS OF THOSE INVOLVED IN ACCIDENTS --
+select * from Bikers group by Age_Grp;
+
+-- THE NUMBER OF ACCIDENTS INVOLVING BY MALES --
+select count(Gender) from Bikers where Gender = 'Male';
+
+-- TTHE NUMBER OF ACCIDENTS INVOLVING FEMALES --
+select count(Gender) from Bikers where Gender = 'Female';
+
+-- THE NUMBER OF ACCIDENTS COMMITTED BY OTHERS --
+select count(Gender) from Bikers where Gender = 'Other';
+
+-- TOTAL NUMBER OF ACCIDENTS ( Males were in 79.73% of accidents, Females 20.26, and Others 0.01%.) --
+select DISTINCT count(Accident_Index) from Bikers;
+
+-- RANKING THE NUMBER OF ACCIDENTS BY SPEED LIMIT --
+select Speed_limit, Count(Speed_limit) as count_value from Accidents group by Speed_limit order by count_value desc;
+
+-- RANKING THE LIGHT CONDITIONS BY NUMBER OF ACCIDENTS --
+select Light_conditions, count(Accident_Index) from Accidents group by Light_conditions;
+-- The light condition for most of the accidents is day light with 660657 accidents, followed by darkness with lights with 142039, and dark no lights with 25165 accidents --
+
+-- RANKING THE RAOD CONDITIONS BY NUMBER OF ACCIDENTS-- 
+select Road_conditions, count(Accident_Index)from Accidents group by Road_conditions;
+
+-- RANKING THE WEATHER CONDITIONS BY NUMBER OF ACCIDENTS-- 
+select Weather_conditions, count (Accident_Index) from Accidents group by Weather_conditions order by Accident_Index desc;
+-- ranking weather conditions by number of accidents. clear at 683162, Rain at 82007, Clear and Windy at 11891, Rain and Windy at 8808, Fog at 3369, Snow at 2086, and snow and windy at 483 --
+
