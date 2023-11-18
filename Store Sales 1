@@ -1,0 +1,101 @@
+select * from Global_Superstore2;
+
+ 
+select min(OrderDAte), max(OrderDate) from Global_Superstore2;
+-- HOW MANY ORDERS WERE MADE DURING TIME RECORDED --
+select DISTINCT count(OrderID) from Global_Superstore2;
+
+-- HOW MANY ORDERS WERE MADE IN UK IN 2013--
+select DISTINCT count(OrderID) from Global_Superstore2 
+where country = 'United Kingdom' and OrderDate between '01-01-2013' and '31-12-2013';
+
+-- HOW MANY ORDER FOR TECH WERE PLACED --
+select distinct count(CustomerID) from Global_Superstore2 where Category = 'Technology';
+
+-- SELECR CUSTOMER ID NUMBERS FOR ALL TECH ORDERS --
+select CustomerID from Global_Superstore2 where Category = 'Technology';
+
+
+-- IDENTIFYING AND ORDERING (DESCENDING ORDER) SHIPPING LOCATIONS --
+select Country, count(Country) as orders_placed from Global_Superstore2
+group by Country order by orders_placed desc;
+
+
+-- IDENTIFYING AND ORDERING (DESCENDING ORDER) SHIP MODE --
+select ShipMode, count(ShipMode) as orders_placed from Global_Superstore2
+ group by ShipMode order by orders_placed desc;
+
+-- HOW MANY ORDERS WERE FOR FURNITURE? -- 
+select Category, count(Category) as orders_placed from Global_Superstore2 where Category = 'Furniture';
+
+
+-- PROFIT PER PRODUCT FOR EACH PRODUCT CATEGORY WITHIN UK MARKET --
+select Category, round(sum(Profit/Quantity), 2) as profit_per_product from Global_Superstore2 
+where Country = 'United Kingdom' 
+group by category order by profit_per_product;
+
+-- HOW MANY PRODUCTS OF EACH CATEGORY WERE SOLD, DESCENDING ORDER? -- 
+select Category, count(Category) as orders_placed from Global_Superstore2
+group by Category order by orders_placed desc;
+
+
+
+-- HOW MANNY TECH PRODUCTS WERE SOLD IN USA WITH FIRST CLASS SHIPPING
+ -- AND WHAT WAS TOTAL PROFIT PER PRODUCT --
+
+select category, round(sum(Profit/Quantity), 2)
+as profit_per_product
+from Global_Superstore2
+where Category = 'Technology' and Country = 'United States' and ShipMode = 'First Class'
+group by Category
+order by profit_per_product;
+
+-- WHAT ARE THE MOST PFOITABLE PRODUCTS IN THE UNITED KINGDOM SALES --
+select DISTINCT ProductName, Profit from Global_Superstore2
+where country = 'United Kingdom' group by ProductName order by profit desc;
+
+-- WHAT WAS THE LEAST PROFITABLE  PRODUCT IN THE UK IN MARCH 2013, AND WHAT WAS ITS PRICE? --
+select DISTINCT ProductName, Profit 
+from Global_Superstore2 
+where Country = 'United Kingdom' and OrderDate between '01/03/2013' and '31/03/2013' order by Profit asc;
+
+-- WHAT WAS THE TOTAL PROFIT OF ALL PRODUCTS SOLD IN MARCH 2013 --
+select sum(Profit) as March_2013_Total_Profit from Global_Superstore2
+where OrderDate between '01/03/2013' and '31/03/2013';
+
+
+-- WHAT WAS THE NUMBER OF TOTAL SALES IN UK 2013, AND WHAT THE TOTAL PRFOIT -- 
+select sum(Profit) as UK_2013_TOTAL_PROTFIT,
+sum(Quantity) as UK_2013_TOTAL_SALES from Global_Superstore2
+where OrderDate between '01/01/2013' and '31/12/2013';
+
+
+-- ALL PRODUCTS SOLD IN UK 2013, AND WHAT WAS THE QUANTITY FOR EACH -- 
+select ProductName, sum(Quantity) As Total_Products_Sold from Global_Superstore2
+where country = 'United Kingdom' and OrderDate between '01-01-2013' and '31-12-2013'
+group by ProductName;
+
+-- WHICH UK CITIES HAVE AT LEAST 3 ORDER IN 2013, AND HOW MANY DID EACH MAKE --
+select distinct City, count(OrderID) as Total_Orders from Global_Superstore2
+where Country = 'United Kingdom' and OrderDate between '01/01/2013' and '31/12/2013'
+group by City
+having Total_Orders >= 3
+order by City desc;
+
+-- HOW MANY OF EACH TYPE OF PHONE WAS SOLD IN THE UK IN 2012 --
+select ProductName, sum(Quantity) as Quantity_sold from Global_Superstore2 where Country = 'United Kingdom' and Orderdate between  '01/01/2012' and '31/12/2012'
+group by ProductName
+having ProductName LIKE '%Phone%';
+
+
+-- WHAT WAS AVERAGE PROFIT EACH PRODUCT CATEGORY MADE FROM UK SALES IN 2014 --
+
+select distinct Category, sum(Profit)/count(CustomerID) as Average_Profit_of_Each_Product from Global_Superstore2
+where country = 'United Kingdom' and OrderDate between '01/01/2014' and '31/12/2014'
+group by Category;
+
+-- WHICH PRODUCT BROUGHT IN THE HIGHEST PROFITS IN THE UK IN 2014 --
+select Profit, ProductName from Global_Superstore2
+where country = 'United Kingdom' and OrderDate between '01/01/2014' and '31/12/2014'
+order by Profit desc
+limit 1;
